@@ -11,6 +11,8 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/office-js": "^1.0.591",
+    "@types/office-js-preview": "^1.0.708",
     "typescript": "^6.0.3"
   }
 }

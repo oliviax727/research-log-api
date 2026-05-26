@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:bundle": "esbuild src/adapters/office-js-adapter.ts --bundle --format=esm --outfile=dist/office-js-adapter.js",
+    "build:script": "mkdir -p dist && cat src/core.ts src/adapters/office-script-adapter.ts > dist/office-script-single.ts"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,7 @@
     "@types/node": "^25.9.1",
     "@types/office-js": "^1.0.591",
     "@types/office-js-preview": "^1.0.708",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "esbuild": "^0.18.0"
   }
 }

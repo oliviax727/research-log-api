@@ -4,16 +4,17 @@ var ResearchLog;
 (function (ResearchLog) {
     // User-defined types are not allowed so functionstring is explicitly defined
     function runFunction(workbook, functionString) {
-        // Get function string from options
+        // Get export function string from options
         const callbackFunction = functionMap.get(functionString);
         // Type safety
         if (typeof callbackFunction === "undefined") {
             return;
         }
-        // Run called function
+        // Run called export function
         suspendSheetAndExecute(workbook, callbackFunction);
         return;
     }
+    ResearchLog.runFunction = runFunction;
     // Define a map of available functions
     const functionMap = new Map([
         ["Add Entry", addEntry],
@@ -22,7 +23,7 @@ var ResearchLog;
         ["Clock In", clockIn],
         ["Clock Out", clockOut],
     ]);
-    // Suspend calculations and run the given input function
+    // Suspend calculations and run the given input export function
     function suspendSheetAndExecute(workbook, callback) {
         // Specify workbook and application
         const application = workbook.application;
@@ -30,7 +31,7 @@ var ResearchLog;
         // Turn off automatic calculations during the script.
         application.calculationMode = Excel.CalculationMode.manual;
         try {
-            // Call and execute the callback function
+            // Call and execute the callback
             callback({
                 workbook: workbook,
                 sheet: sheet,
@@ -53,6 +54,7 @@ var ResearchLog;
         // Resume automatic calculations after the script finishes
         application.calculationMode = Excel.CalculationMode.automatic;
     }
+    ResearchLog.suspendSheetAndExecute = suspendSheetAndExecute;
     // Shift all entries down by one i.e. create a blank entry
     function shiftEntry(appData) {
         // Shift all rows down
@@ -65,6 +67,7 @@ var ResearchLog;
         appData.sheet.getRange("B5").clear(Excel.ClearApplyTo.contents);
         appData.sheet.getRange("F5:G5").clear(Excel.ClearApplyTo.contents);
     }
+    ResearchLog.shiftEntry = shiftEntry;
     // Add a new entry
     function addEntry(appData) {
         // Shift Entry
@@ -113,11 +116,13 @@ var ResearchLog;
         appData.sheet.getRange("L32").clear(Excel.ClearApplyTo.contents);
         appData.sheet.getRange("N32").clear(Excel.ClearApplyTo.contents);
     }
+    ResearchLog.addEntry = addEntry;
     // Remove the most recent entry
     function popEntry(appData) {
         // Delete top row and shift up
         appData.sheet.getRange("B5:G5").delete(Excel.DeleteShiftDirection.up);
     }
+    ResearchLog.popEntry = popEntry;
     // Set the start time for the day
     function clockIn(appData) {
         // Get current time and round to nearest 30 mins
@@ -127,12 +132,14 @@ var ResearchLog;
         let timeRange = appData.sheet.getRange("L18");
         timeRange.values = [[time.toLocaleTimeString()]];
     }
+    ResearchLog.clockIn = clockIn;
     // Round a date to the nearest 30 minutes
     function roundToNearest30(date) {
         const minutes = 30;
         const ms = 1000 * 60 * minutes;
         return new Date(Math.floor(date.getTime() / ms) * ms);
     }
+    ResearchLog.roundToNearest30 = roundToNearest30;
     // Add another entry and clear the start time for the day
     function clockOut(appData) {
         // Add Entry
@@ -140,6 +147,7 @@ var ResearchLog;
         // Clear start time
         appData.sheet.getRange("L18").clear(Excel.ClearApplyTo.contents);
     }
+    ResearchLog.clockOut = clockOut;
 })(ResearchLog || (ResearchLog = {}));
-export { ResearchLog };
+module.exports = ResearchLog;
 //# sourceMappingURL=index.js.map

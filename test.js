@@ -1,17 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-console.log("Hello world!");
-async function fetchFile(file) {
+async function importFile(file) {
     const response = await fetch(file);
     const data = await response.json();
-    const response2 = await fetch(data.download_url);
-    const text = await response2.text();
-    console.log("Content of index.ts:");
-    console.log(text);
-}
-async function importFile(file) {
-    const module = await import(file);
+    const jsContent = await fetch(data.download_url).then(r => r.text());
+    const dataUrl = `data:text/javascript,${encodeURIComponent(jsContent)}`;
+    const module = await import(dataUrl);
     console.log(module);
 }
-importFile("https://api.github.com/repos/oliviax727/research-log-api/contents/index.ts");
+importFile("https://api.github.com/repos/oliviax727/research-log-api/contents/index.js");
 //# sourceMappingURL=test.js.map

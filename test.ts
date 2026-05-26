@@ -6,7 +6,7 @@ async function importFile(file: string): Promise<void> {
     const dataUrl = `data:text/javascript,${encodeURIComponent(jsContent)}`;
 
     const module = await import(dataUrl);
-    console.log(jsContent);
+    console.log(module);
 }
 
 importFile("https://api.github.com/repos/oliviax727/research-log-api/contents/index.js");

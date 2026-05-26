@@ -3,11 +3,11 @@
 namespace ResearchLog {
 
   // User-defined types are not allowed so functionstring is explicitly defined
-  function runFunction(
+  export function runFunction(
     workbook: Excel.Workbook,
     functionString: functionStringOptions,
   ): void {
-    // Get function string from options
+    // Get export function string from options
     const callbackFunction = functionMap.get(functionString);
 
     // Type safety
@@ -15,13 +15,13 @@ namespace ResearchLog {
       return;
     }
 
-    // Run called function
+    // Run called export function
     suspendSheetAndExecute(workbook, callbackFunction);
 
     return;
   }
 
-  // Define a type based on the allowed function inputs
+  // Define a type based on the allowed export function inputs
   type functionStringOptions =
     | "Add Entry"
     | "Shift Entry"
@@ -48,8 +48,8 @@ namespace ResearchLog {
     application: Excel.Application;
   }
 
-  // Suspend calculations and run the given input function
-  function suspendSheetAndExecute(
+  // Suspend calculations and run the given input export function
+  export function suspendSheetAndExecute(
     workbook: Excel.Workbook,
     callback: (appData: ExcelAppData) => void,
   ): void {
@@ -61,7 +61,7 @@ namespace ResearchLog {
     application.calculationMode = Excel.CalculationMode.manual;
 
     try {
-      // Call and execute the callback function
+      // Call and execute the callback
       callback({
         workbook: workbook,
         sheet: sheet,
@@ -84,7 +84,7 @@ namespace ResearchLog {
   }
 
   // Shift all entries down by one i.e. create a blank entry
-  function shiftEntry(appData: ExcelAppData): void {
+  export function shiftEntry(appData: ExcelAppData): void {
     // Shift all rows down
     appData.sheet.getRange("B5:G5").insert(Excel.InsertShiftDirection.down);
 
@@ -104,7 +104,7 @@ namespace ResearchLog {
   }
 
   // Add a new entry
-  function addEntry(appData: ExcelAppData): void {
+  export function addEntry(appData: ExcelAppData): void {
     // Shift Entry
     shiftEntry(appData);
 
@@ -171,13 +171,13 @@ namespace ResearchLog {
   }
 
   // Remove the most recent entry
-  function popEntry(appData: ExcelAppData) {
+  export function popEntry(appData: ExcelAppData) {
     // Delete top row and shift up
     appData.sheet.getRange("B5:G5").delete(Excel.DeleteShiftDirection.up);
   }
 
   // Set the start time for the day
-  function clockIn(appData: ExcelAppData) {
+  export function clockIn(appData: ExcelAppData) {
     // Get current time and round to nearest 30 mins
     let date = new Date(Date.now());
     let time = roundToNearest30(date);
@@ -188,7 +188,7 @@ namespace ResearchLog {
   }
 
   // Round a date to the nearest 30 minutes
-  function roundToNearest30(date: Date) {
+  export function roundToNearest30(date: Date) {
     const minutes = 30;
     const ms = 1000 * 60 * minutes;
 
@@ -196,7 +196,7 @@ namespace ResearchLog {
   }
 
   // Add another entry and clear the start time for the day
-  function clockOut(appData: ExcelAppData) {
+  export function clockOut(appData: ExcelAppData) {
     // Add Entry
     addEntry(appData);
 

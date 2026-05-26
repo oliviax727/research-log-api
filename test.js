@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 async function importFile(file) {
     const response = await fetch(file);
     const data = await response.json();
@@ -9,4 +7,5 @@ async function importFile(file) {
     console.log(module);
 }
 importFile("https://api.github.com/repos/oliviax727/research-log-api/contents/index.js");
+export {};
 //# sourceMappingURL=test.js.map

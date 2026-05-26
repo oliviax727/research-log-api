@@ -205,4 +205,4 @@ namespace ResearchLog {
   }
 }
 
-export = ResearchLog;
+export { ResearchLog };

@@ -1,4 +1,3 @@
-"use strict";
 /// <reference types="office-js" />
 var ResearchLog;
 (function (ResearchLog) {

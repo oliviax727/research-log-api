@@ -15,5 +15,5 @@ declare namespace ResearchLog {
     export function clockOut(appData: ExcelAppData): void;
     export {};
 }
-export = ResearchLog;
+export { ResearchLog };
 //# sourceMappingURL=index.d.ts.map

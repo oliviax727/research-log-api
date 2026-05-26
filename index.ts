@@ -6,7 +6,7 @@ namespace ResearchLog {
   function runFunction(
     workbook: Excel.Workbook,
     functionString: functionStringOptions,
-  ) {
+  ): void {
     // Get function string from options
     const callbackFunction = functionMap.get(functionString);
 

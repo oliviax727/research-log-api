@@ -6,8 +6,16 @@ namespace ResearchLog {
     workbook: Excel.Workbook,
     functionString: functionStringOptions,
   ) {
+    // Get function string from options
+    const callbackFunction = functionMap.get(functionString);
+
+    // Type safety
+    if (typeof callbackFunction === "undefined") {
+      return;
+    }
+
     // Run called function
-    suspendSheetAndExecute(workbook, functionMap.get(functionString));
+    suspendSheetAndExecute(workbook, callbackFunction);
 
     return;
   }
@@ -45,11 +53,11 @@ namespace ResearchLog {
     callback: (appData: ExcelAppData) => void,
   ): void {
     // Specify workbook and application
-    const application = workbook.getApplication();
-    let sheet = workbook.getWorksheet("Logbook");
+    const application = workbook.application;
+    let sheet = workbook.worksheets.getItem("Logbook");
 
     // Turn off automatic calculations during the script.
-    application.setCalculationMode(Excel.CalculationMode.manual);
+    application.calculationMode = Excel.CalculationMode.manual;
 
     try {
       // Call and execute the callback function
@@ -67,11 +75,11 @@ namespace ResearchLog {
       }
     } finally {
       // Manually calculate the file
-      workbook.getApplication().calculate(Excel.CalculationType.full);
+      application.calculate(Excel.CalculationType.recalculate);
     }
 
     // Resume automatic calculations after the script finishes
-    application.setCalculationMode(Excel.CalculationMode.automatic);
+    application.calculationMode = Excel.CalculationMode.automatic;
   }
 
   // Shift all entries down by one i.e. create a blank entry
@@ -108,7 +116,7 @@ namespace ResearchLog {
     let customHoursEntry = appData.sheet.getRange("N32");
 
     // Copy entry description from either defaults of override
-    if (customDescriptionEntry.getValue() as string) {
+    if (customDescriptionEntry.values?.[0]?.[0]) {
       appData.sheet
         .getRange("F5")
         .copyFrom(
@@ -118,13 +126,13 @@ namespace ResearchLog {
           false,
         );
     } else {
-      appData.sheet
-        .getRange("F5")
-        .setValue("Unspecified work on " + date.toLocaleDateString());
+      appData.sheet.getRange("F5").values = [[
+        "Unspecified work on " + date.toLocaleDateString(),
+      ]];
     }
 
     // Copy entry hours from either defaults of override
-    if (customHoursEntry.getValue()) {
+    if (customHoursEntry.values?.[0]?.[0]) {
       appData.sheet
         .getRange("G5")
         .copyFrom(customHoursEntry, Excel.RangeCopyType.values, false, false);
@@ -140,7 +148,7 @@ namespace ResearchLog {
     }
 
     // Copy entry date from either defaults of override
-    if (customDateEntry.getValue()) {
+    if (customDateEntry.values?.[0]?.[0]) {
       appData.sheet
         .getRange("B5")
         .copyFrom(customDateEntry, Excel.RangeCopyType.values, false, false);
@@ -175,7 +183,7 @@ namespace ResearchLog {
 
     // Set start time cell to given time
     let timeRange = appData.sheet.getRange("L18");
-    timeRange.setValue(time.toLocaleTimeString());
+    timeRange.values = [[time.toLocaleTimeString()]];
   }
 
   // Round a date to the nearest 30 minutes

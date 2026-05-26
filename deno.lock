@@ -1,0 +1,16 @@
+{
+  "version": "5",
+  "remote": {
+    "https://raw.githubusercontent.com/oliviax727/research-log-api/main/index.ts": "3684c4a0bd39ca57cf7d322030b52909e5a55abf26c07b474e9fc5e95ae191a6"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@types/node@^25.9.1",
+        "npm:@types/office-js-preview@^1.0.708",
+        "npm:@types/office-js@^1.0.591",
+        "npm:typescript@^6.0.3"
+      ]
+    }
+  }
+}

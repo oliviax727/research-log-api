@@ -1,7 +1,6 @@
 /// <reference types="office-js" />
 
 namespace ResearchLog {
-
   // User-defined types are not allowed so functionstring is explicitly defined
   export function runFunction(
     workbook: Excel.Workbook,

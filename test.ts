@@ -1,12 +1,11 @@
+
+
 async function importFile(file: string): Promise<void> {
     const response = await fetch(file);
     const data = await response.json();
 
-    const jsContent = await fetch(data.download_url).then(r => r.text());
-    const dataUrl = `data:text/javascript,${encodeURIComponent(jsContent)}`;
-
-    const module = await import(dataUrl);
+    const module = await import(data.download_url);
     console.log(module);
 }
 
-importFile("https://api.github.com/repos/oliviax727/research-log-api/contents/index.js");
+importFile("https://api.github.com/repos/oliviax727/research-log-api/contents/index.ts");

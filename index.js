@@ -141,5 +141,5 @@ var ResearchLog;
         appData.sheet.getRange("L18").clear(Excel.ClearApplyTo.contents);
     }
 })(ResearchLog || (ResearchLog = {}));
-module.exports = ResearchLog;
+export { ResearchLog };
 //# sourceMappingURL=index.js.map

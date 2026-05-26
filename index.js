@@ -149,5 +149,5 @@ var ResearchLog;
     }
     ResearchLog.clockOut = clockOut;
 })(ResearchLog || (ResearchLog = {}));
-module.exports = ResearchLog;
+export { ResearchLog };
 //# sourceMappingURL=index.js.map

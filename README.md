@@ -1,31 +1,33 @@
 # research-log-api
 
-This repository contains a portable core module plus environment adapters for Office Scripts (ExcelScript) and Office Add-ins (office-js).
+This repository contains the `ResearchLog` namespace with reusable functions for Excel workbook operations, optimized for Office Scripts and Office Add-ins.
 
 Quick summary
 
-- `src/core.ts` — pure logic with no host-specific types.
-- `src/adapters/office-script-adapter.ts` — small adapter to use in Office Scripts.
-- `src/adapters/office-js-adapter.ts` — small adapter to use in an Office Add-in.
+- `index.ts` — core ResearchLog namespace with functions for managing entries and tracking time.
+- `package.json` — build scripts to compile for Office Scripts use.
 
 Build
 
-Install dev deps and run the build scripts:
+Install dev deps and compile:
 
 ```bash
 npm install
-npm run build:bundle    # produces dist/office-js-adapter.js (ESM)
-npm run build:script    # concatenates core + office-script adapter into dist/office-script-single.ts
+npm run build              # standard TypeScript compilation
+npm run build:office-script # compile index.ts for Office Scripts (outputs dist/office-script.ts)
 ```
 
 Office Scripts
 
-- Open `dist/office-script-single.ts`, paste into the Office Scripts editor, and call `runFunction(workbook, "Add Entry")` (adapt as needed).
+- Run `npm run build:office-script` to generate `dist/office-script.ts`.
+- Open the generated file and paste the code into the Office Scripts editor.
+- Call `ResearchLog.runFunction(workbook, "Add Entry")` from another script or button action.
 
-Office Add-ins
+Functions available
 
-- Host `dist/office-js-adapter.js` on your add-in server and import it from your add-in code.
-
-Deno / Remote imports
-
-Deno can import `index.ts` directly from `raw.githubusercontent.com`. Ensure the exported API is ESM-compatible when importing into other runtimes.
+- `ResearchLog.addEntry(appData)` — add a new entry to the logbook.
+- `ResearchLog.popEntry(appData)` — remove the most recent entry.
+- `ResearchLog.shiftEntry(appData)` — create a blank entry at the top.
+- `ResearchLog.clockIn(appData)` — set the start time (cell L18) to current rounded time.
+- `ResearchLog.clockOut(appData)` — add an entry using the start time and clear L18.
+- `ResearchLog.roundToNearest30(date)` — round a Date to the nearest 30 minutes.

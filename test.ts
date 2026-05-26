@@ -4,7 +4,7 @@ interface GitHubContent {
 
 interface ResearchLogModule {
   ResearchLog: {
-    runFunction: (workbook: ExcelScript.Workbook, functionString: string) => void;
+    runFunction: (workbook: any, functionString: string) => void;
     addEntry?: (...args: unknown[]) => unknown;
     shiftEntry?: (...args: unknown[]) => unknown;
     popEntry?: (...args: unknown[]) => unknown;

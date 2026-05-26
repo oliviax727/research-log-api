@@ -1,6 +1,7 @@
 /// <reference types="office-js" />
 
 namespace ResearchLog {
+
   // User-defined types are not allowed so functionstring is explicitly defined
   function runFunction(
     workbook: Excel.Workbook,
@@ -203,3 +204,5 @@ namespace ResearchLog {
     appData.sheet.getRange("L18").clear(Excel.ClearApplyTo.contents);
   }
 }
+
+export = ResearchLog;

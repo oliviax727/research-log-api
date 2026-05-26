@@ -9,6 +9,7 @@
         "npm:@types/node@^25.9.1",
         "npm:@types/office-js-preview@^1.0.708",
         "npm:@types/office-js@^1.0.591",
+        "npm:esbuild@0.18",
         "npm:typescript@^6.0.3"
       ]
     }

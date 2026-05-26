@@ -1,12 +1,28 @@
+interface GitHubContent {
+  download_url: string;
+}
 
+interface ResearchLogModule {
+  ResearchLog: {
+    runFunction: (workbook: ExcelScript.Workbook, functionString: string) => void;
+    addEntry?: (...args: unknown[]) => unknown;
+    shiftEntry?: (...args: unknown[]) => unknown;
+    popEntry?: (...args: unknown[]) => unknown;
+    clockIn?: (...args: unknown[]) => unknown;
+    clockOut?: (...args: unknown[]) => unknown;
+  };
+}
 
-async function importFile(file: string): Promise<void> {
-    const response = await fetch(file);
-    const data = await response.json();
+async function importFile(fileUrl: string): Promise<void> {
+  const response = await fetch(fileUrl);
+  if (!response.ok) {
+    throw new Error(`Fetch failed: ${response.status} ${response.statusText}`);
+  }
 
-    // GitHub API `contents` returns `download_url`; use that to import in Deno/Node.
-    const module = await import(data.download_url);
-    console.log(module);
+  const data = (await response.json()) as GitHubContent;
+
+  const researchLogModule = (await import(data.download_url)) as ResearchLogModule;
+  console.log(researchLogModule);
 }
 
 importFile("https://api.github.com/repos/oliviax727/research-log-api/contents/index.ts");
